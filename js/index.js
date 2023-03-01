@@ -106,6 +106,11 @@ const showData = (drinks, dataLimit) => {
     const searchField = document.getElementById('search-input');
     const searchText = searchField.value;
     loadData(searchText, dataLimit);
+
+    const select = document.getElementById ('mySelect').value;
+
+    loadFilter (select, dataLimit)
+
 }
 
 
@@ -147,7 +152,101 @@ container.innerHTML += `
     
 }
 
+const loadFilter =  (cat, dataLimit) => {
 
+  const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=${cat}`
+  fetch (url)
+  .then (res => res.json ())
+  .then (data => showFilter (data.drinks, dataLimit))
+
+
+
+
+ }
+
+
+ const showFilter = (drinks, dataLimit) => {
+
+  const alert = document.getElementById('alert');
+
+  const container = document.getElementById ('container');
+  container.innerHTML = ''
+
+  const showAll = document.getElementById('showAll');
+
+  if(dataLimit && drinks.length > 10) {
+      drinks = drinks.slice(0, 10);
+      showAll.classList.remove('hidden');
+  }
+  else{
+      showAll.classList.add('hidden');
+  }
+  const select = document.getElementById ('mySelect').value;
+
+  
+  
+
+ 
+
+  drinks.forEach (drink => {
+
+      container.innerHTML += `
+
+      
+      <div class="card w-96 bg-base-100 shadow-xl">
+      <figure><img src="${drink.strDrinkThumb}" alt="Shoes" /></figure>
+      <div class="card-body">
+        <h2 class="card-title">
+         ${drink.strDrink}
+          <div class="badge badge-secondary">${select}</div>
+        </h2>
+        <label onclick="loadDetails(${drink.idDrink})"  for="my-modal-3" class="btn">Details</label>
+
+       
+      </div>
+    </div>
+
+
+      
+      
+      
+      `
+
+
+
+
+  } )
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+const myFilter =  (filter) => {
+
+
+
+  const select = document.getElementById ('mySelect').value;
+  loadFilter (select)
+  processSearch (10)
+
+
+
+
+}
+
+
+loadFilter ()
 
 
  showAll ()
